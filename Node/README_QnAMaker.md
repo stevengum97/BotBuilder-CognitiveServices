@@ -11,7 +11,7 @@ You should create a knowledge base at [QnA Maker](https://qnamaker.ai). This is 
 ### Installation
 Install the botbuilder-cognitiveservices  module using npm.
 
-    npm install --save botbuilder-cognitiveservices
+`npm install --save botbuilder-cognitiveservices`
 
 The following parameters are passed when invoking the QnA Maker service.
 + Subscription Key - Each registered user on [QnA Maker](https://qnamaker.ai) is assigned an unique subscription key for metering.
@@ -22,16 +22,18 @@ The following parameters are passed when invoking the QnA Maker service.
 ### Calling the QnAMakerDialog
 The example extends the QnAMakerDialog, and calls it with the required parameters.
 
-````JavaScript
+```js
 var recognizer = new cognitiveservices.QnAMakerRecognizer({
 	knowledgeBaseId: 'set your kbid here',
-	subscriptionKey: 'set your subscription key here'});
+	subscriptionKey: 'set your subscription key here'
+});
 
 var BasicQnAMakerDialog = new cognitiveservices.QnAMakerDialog({
 	recognizers: [recognizer],
 	defaultMessage: 'No good match in FAQ.',
-	qnaThreshold: 0.5});
-````
+	qnaThreshold: 0.5
+});
+```
 
 ## Sample Bots
 You can find a simple sample bot that uses the QnAMakerDialog [here](samples/QnAMaker/QnAMakerSimpleBot/app.js).
@@ -41,7 +43,7 @@ A list of more advanced samples can be found [here](samples/QnAMaker/README.md).
 ## More Information
 Read these resources for more information about the Microsoft Bot Framework, Bot Builder SDK and QnA Maker:
 
-* [Microsoft Bot Framework Overview](https://docs.botframework.com/en-us/)
+* [Microsoft Bot Framework Overview](https://docs.microsoft.com/en-us/bot-framework/)
 * [Microsoft Bot Framework Bot Builder SDK](https://github.com/Microsoft/BotBuilder)
 * [Microsoft Bot Framework Samples](https://github.com/Microsoft/BotBuilder-Samples)
 * [QnA Maker Documentation](https://qnamaker.ai/Documentation)

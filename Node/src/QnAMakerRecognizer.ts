@@ -99,27 +99,30 @@ export class QnAMakerRecognizer implements builder.IIntentRecognizer {
 
     static recognize(utterance: string, kbUrl: string, ocpApimSubscriptionKey: string, top: number, intentName: string, callback: (error: Error, result?: IQnAMakerResults) => void): void {
         try {
-            var postBody = '{"question":"' + utterance + '", "top":' + top + '}';
             request({
                 url: kbUrl,
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
                     'Ocp-Apim-Subscription-Key': ocpApimSubscriptionKey
                 },
-                body: postBody
+                json: {
+                    question: utterance,
+                    top: top
+                }
             },
-                function (error: Error, response: any, body: string) {
+                function (error: Error, response: any, result: IQnAMakerResults) {
                     var result: IQnAMakerResults;
                     try {
                         if (!error) {
                             if (response.statusCode === 200) {
-                                result = JSON.parse(body);
                                 var answerEntities: builder.IEntity[] = [];
                                 if(result.answers && result.answers.length > 0){
                                     result.answers.forEach((ans) => {
                                         ans.score /= 100;
                                         ans.answer = htmlentities.decode(ans.answer);
+                                        if (ans.questions && ans.questions.length > 0) {
+                                            ans.questions = ans.questions.map((q: string) => htmlentities.decode(q));
+                                        }
                                         var answerEntity = {
                                             score: ans.score,
                                             entity: ans.answer,
@@ -132,7 +135,7 @@ export class QnAMakerRecognizer implements builder.IIntentRecognizer {
                                     result.intent = intentName;
                                 }
                             } else {
-                                error = new Error(body);
+                                error = new Error(`QnA request returned a ${response.statusCode} code with body: ${result}`);
                             }
                         }
                     } catch (e) {
